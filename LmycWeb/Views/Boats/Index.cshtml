@@ -7,7 +7,10 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @if ((await AuthorizationService.AuthorizeAsync(User, "AdminRequired")).Succeeded)
+    {
+        <a asp-action="Create">Create New</a>
+    }
 </p>
 <table class="table">
     <thead>
@@ -56,9 +59,19 @@
                     @Html.DisplayFor(modelItem => item.User.UserName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.BoatId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.BoatId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.BoatId">Delete</a>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "LoginRequired")).Succeeded)
+                    {
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "AdminRequired")).Succeeded)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.BoatId">Edit</a><span> | </span>
+                        }
+                        <a asp-action="Details" asp-route-id="@item.BoatId">Details</a>
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "AdminRequired")).Succeeded)
+                        {
+                            <span> | </span>
+                            <a asp-action="Delete" asp-route-id="@item.BoatId">Delete</a>
+                        }
+                    }
                 </td>
             </tr>
         }
