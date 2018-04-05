@@ -34,6 +34,8 @@ namespace LmycWeb.Data
 
                 var adminId = await SeedingUser(serviceProvider, admin, "P@$$w0rd");
 
+                await SeedingRole(serviceProvider, adminId, "Admin");
+
                 var member = new ApplicationUser
                 {
                     UserName = "m",
@@ -51,6 +53,7 @@ namespace LmycWeb.Data
 
                 var memberId = await SeedingUser(serviceProvider, member, "P@$$w0rd");
 
+                await SeedingRole(serviceProvider, memberId, "Member");
 
                 if (context.Boats.Any())
                 {
@@ -93,7 +96,27 @@ namespace LmycWeb.Data
             return user.Id;
         }
 
-        public static List<Boat> GetBoats(string adminId)
+
+        public static async Task<IdentityResult> SeedingRole(IServiceProvider serviceProvider, string uid, string role)
+        {
+            IdentityResult result = null;
+            var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
+
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                result = await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        
+            var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
+            var user = await userManager.FindByIdAsync(uid);
+            
+            result = await userManager.AddToRoleAsync(user, role);
+
+            return result;
+        }
+
+
+        private static List<Boat> GetBoats(string adminId)
         {
             List<Boat> boats = new List<Boat>()
             {
