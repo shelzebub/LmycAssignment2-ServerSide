@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LmycWeb.Data;
 using LmycWeb.Models.LmycBoatClub;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LmycWeb.Controllers
 {
+    [Authorize(Policy = "LoginRequired")]
     public class BoatsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -46,6 +48,7 @@ namespace LmycWeb.Controllers
         }
 
         // GET: Boats/Create
+        [Authorize(Policy = "AdminRequired")]
         public IActionResult Create()
         {
             ViewData["CreatedBy"] = new SelectList(_context.Users, "Id", "Id");
@@ -57,6 +60,7 @@ namespace LmycWeb.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "AdminRequired")]
         public async Task<IActionResult> Create([Bind("BoatId,BoatName,Picture,LengthInFeet,Make,Year")] Boat boat)
         {
             if (ModelState.IsValid)
@@ -70,6 +74,7 @@ namespace LmycWeb.Controllers
         }
 
         // GET: Boats/Edit/5
+        [Authorize(Policy = "AdminRequired")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,6 +96,7 @@ namespace LmycWeb.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "AdminRequired")]
         public async Task<IActionResult> Edit(int id, [Bind("BoatId,BoatName,Picture,LengthInFeet,Make,Year")] Boat boat)
         {
             if (id != boat.BoatId)
@@ -123,6 +129,7 @@ namespace LmycWeb.Controllers
         }
 
         // GET: Boats/Delete/5
+        [Authorize(Policy = "AdminRequired")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,6 +149,7 @@ namespace LmycWeb.Controllers
         }
 
         // POST: Boats/Delete/5
+        [Authorize(Policy = "AdminRequired")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
