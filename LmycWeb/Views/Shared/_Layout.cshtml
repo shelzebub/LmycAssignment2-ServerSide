@@ -33,9 +33,14 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Boats" asp-action="Index">Boats</a></li>
-                    <li><a asp-area="" asp-controller="Roles" asp-action="Index">Roles</a></li>
-
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "LoginRequired")).Succeeded)
+                    {
+                        <li><a asp-area="" asp-controller="Boats" asp-action="Index">Boats</a></li>
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "AdminRequired")).Succeeded)
+                        {
+                            <li><a asp-area="" asp-controller="Roles" asp-action="Index">Roles</a></li>
+                        }
+                    }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
