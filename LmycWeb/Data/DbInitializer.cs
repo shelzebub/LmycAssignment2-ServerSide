@@ -51,6 +51,18 @@ namespace LmycWeb.Data
 
                 var memberId = await SeedingUser(serviceProvider, member, "P@$$w0rd");
 
+
+                if (context.Boats.Any())
+                {
+                    return;
+                }
+
+                foreach (var boat in GetBoats(adminId))
+                {
+                    context.Boats.Add(boat);
+                }
+
+                context.SaveChanges();
             }
         }
 
@@ -81,7 +93,7 @@ namespace LmycWeb.Data
             return user.Id;
         }
 
-        public static List<Boat> GetBoats(ApplicationDbContext db)
+        public static List<Boat> GetBoats(string adminId)
         {
             List<Boat> boats = new List<Boat>()
             {
@@ -93,7 +105,7 @@ namespace LmycWeb.Data
                     Make = "LMYC",
                     Year = 2016,
                     CreationDate = DateTime.Today,
-                    User = db.Users.FirstOrDefault (u => u.UserName == "a" )
+                    CreatedBy = adminId
                 },
 
                 new Boat()
@@ -104,7 +116,7 @@ namespace LmycWeb.Data
                     Make = "Vancouvoat",
                     Year = 2018,
                     CreationDate = DateTime.Today,
-                    User = db.Users.FirstOrDefault (u => u.UserName == "a" )
+                    CreatedBy = adminId
                 },
 
                 new Boat()
@@ -115,7 +127,7 @@ namespace LmycWeb.Data
                     Make = "The Otter Company",
                     Year = 2017,
                     CreationDate = DateTime.Today,
-                    User = db.Users.FirstOrDefault (u => u.UserName == "a" )
+                    CreatedBy = adminId
                 },
 
                 new Boat()
@@ -126,7 +138,7 @@ namespace LmycWeb.Data
                     Make = "Waffle Incorporations",
                     Year = 2018,
                     CreationDate = DateTime.Today,
-                    User = db.Users.FirstOrDefault (u => u.UserName == "a" )
+                    CreatedBy = adminId
                 },
 
                 new Boat()
@@ -137,7 +149,7 @@ namespace LmycWeb.Data
                     Make = "Koi & Co.",
                     Year = 2018,
                     CreationDate = DateTime.Today,
-                    User = db.Users.FirstOrDefault (u => u.UserName == "a" )
+                    CreatedBy = adminId
                 },
 
             };
