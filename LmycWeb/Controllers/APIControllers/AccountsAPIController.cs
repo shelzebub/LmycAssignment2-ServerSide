@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace LmycWeb.Controllers.APIControllers
 {
     [Produces("application/json")]
-    [Route("api/AccountAPI")]
+    [Route("api/AccountsAPI")]
     public class AccountsAPIController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
