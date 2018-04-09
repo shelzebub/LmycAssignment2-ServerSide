@@ -8,11 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using LmycWeb.Data;
 using LmycWeb.Models.LmycBoatClub;
 using LmycWeb.Models;
+using Microsoft.AspNetCore.Authorization;
+using AspNet.Security.OAuth.Validation;
 
 namespace LmycWeb.Controllers.APIControllers
 {
     [Produces("application/json")]
     [Route("api/ReservationsAPI")]
+    [Authorize(Policy = "LoginRequired", AuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
     public class ReservationsAPIController : Controller
     {
         private readonly ApplicationDbContext _context;
