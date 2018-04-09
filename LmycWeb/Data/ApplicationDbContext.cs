@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using LmycWeb.Models;
 using LmycWeb.Models.LmycBoatClub;
+using LmycWeb.Controllers.APIControllers;
 
 namespace LmycWeb.Data
 {
@@ -24,5 +25,7 @@ namespace LmycWeb.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
         public DbSet<Boat> Boats { get; set; }
+        public IEnumerable<Reservation> Reservations { get; internal set; }
+        public DbSet<LmycWeb.Models.LmycBoatClub.Reservation> Reservation { get; set; }
     }
 }
